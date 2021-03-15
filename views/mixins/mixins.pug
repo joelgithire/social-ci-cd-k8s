@@ -1,0 +1,8 @@
+mixin createPostForm(userLoggedIn)
+    .postFormContainer 
+        .userImageContainer
+            img(src=userLoggedIn.profilePic, alt="Users Profile Picture")
+        .textareaContainer
+            textarea#postTextArea(placeHolder="Fom ni gani?...")
+            .buttonsContainer
+                button#submitPostButton(disabled="") Chapisha
