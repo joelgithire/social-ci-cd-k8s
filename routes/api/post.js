@@ -16,7 +16,7 @@ router.get("/",(req,res,next)=>{
 router.post("/",async (req,res,next)=>{
    if(!req.body.content){
       console.log("param not sent in request");
-      res.sendStatus(400);
+      return res.sendStatus(400);
    }
 
    res.status(200).send("it worked");
