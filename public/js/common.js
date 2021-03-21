@@ -25,8 +25,22 @@ $("#submitPostButton").click(()=>{
         content:textBox.val()
 
     }
-    $.post("/api/posts",data,(postData,status,xhr)=>{
-        console.log(postData);
+    $.post("/api/posts",data,(postData)=>{
+
+        var html = createPostHTML(postData);
+        $(".postContainer").prepend(html)
+        textBox.val("")
+        button.prop("disabled",true)
     })
 })
+
+function createPostHTML(postData){
+    return `<div class='post'>
+                <div class='mainContainer'>
+                <div class='userImageContainer'>
+                    <img src=''>
+                </div>
+                </div>
+            </div>`
+}
 
