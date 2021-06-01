@@ -23,7 +23,7 @@ router.post("/",async (req,res,next)=>{
    var password = req.body.Password;
    
    var payload = req.body;
-    console.log(payload);
+    
 
 
    if(firstName && lastName && username && email && password){

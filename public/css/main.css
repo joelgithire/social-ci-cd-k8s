@@ -4,6 +4,9 @@
     --buttonHover:#87c46f;
     --lightGrey:rgb(230,236,240);
     --spacing:15px;
+    --orange:orange;
+    --green:green;
+    --greenBackground:rgb(201, 243, 201,0.6);
     
 }
 
@@ -29,6 +32,17 @@ nav{
     height:100%;
 
 }
+button{
+    background-color:transparent;
+    border:none;
+    color:grey;
+}
+
+button i,
+button span{
+    pointer-events: none;
+}
+
 .mainSectionContainer{
    padding: 0;
    border-left: 1px solid var(--lightGrey);
@@ -91,6 +105,7 @@ nav a:hover{
     border:none;
     resize: none;
     font-size: 20px;
+    outline: none;
     
 }
 #submitPostButton{
@@ -103,4 +118,211 @@ nav a:hover{
 #submitPostButton:disabled{
     background-color:var(--greenLight);
 
+}
+.post{
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    cursor: pointer;
+    border-bottom: 1px solid var(--lightGrey);
+    flex-shrink:0;
+}
+
+.mainContentContainer{
+    flex:1;
+    display: flex;
+}
+.postContentContainer{
+    padding-left: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.username,.date{
+    color: grey;
+}
+.displayName{
+    font-weight: bold;
+}
+.moto{
+    font-family: 'Notable', sans-serif;
+}
+.postedFooter{
+    display: flex;
+    align-items:center;
+
+}
+
+.postedFooter .postButtonContainer{
+    flex: 1;
+    display: flex;
+    
+}
+
+.postedFooter .postButtonContainer button{
+    padding: 2px 5px;
+}
+.header a:hover{
+    text-decoration: underline;
+}
+
+.header a,
+.header span{
+    padding-right: 5px;
+}
+/* .postButtonContainer button:hover{
+    background-color:#90ee90;
+    color: #64e764;
+    border-radius: 50%;
+    outline: none;
+} */
+
+.postButtonContainer.orange button.active{
+    color:var(--orange);
+}
+
+.postButtonContainer.green button.active{
+    color:var(--green);
+}
+
+.modal .postFormContainer {
+    border:none;
+    padding: 0;
+    padding-top: var(--spacing);
+}
+
+.modal .post{
+    padding:0;
+    padding-bottom: var(--spacing);
+}
+
+.replyFlag{
+    margin-bottom: 5px;
+
+}
+.replyFlag a{
+    color: var(--green);
+}
+
+.post.largeFont .postedBody,
+.post.largeFont .postedFooter{
+    font-size: 23px;
+    color:#35960e;
+}
+
+.postContentContainer .header{
+    display: flex;
+}
+
+.postContentContainer .header .date{
+    flex: 1;
+}
+.errorMessage{
+    padding: var(--spacing);
+}
+.coverPhotoContainer{
+    height: 180px;
+    background-color: var(--green);
+    position: relative;
+
+}
+
+.profileHeaderContainer .userImageContainer{
+    height: 132px;
+    width: 132px;
+    margin-left: var(--spacing);
+    position: absolute;
+    bottom: -66px;
+
+}
+
+.profileHeaderContainer .userImageContainer img{
+    border: 4px solid #ffff;
+    
+}
+
+.profileHeaderContainer .profileButtonsCointainers{
+    text-align: right;
+    padding: var(--spacing);
+    min-height: 66px;
+}
+
+.profileButton,
+.followButton{
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-weight:bold;
+    padding:5px 15px;
+    border-radius:60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+
+}
+.profileButton:hover,
+.followButton:hover {
+    background: var(--greenBackground);
+    
+}
+
+.followButton.following{
+    background-color: var(--green);
+    color: #ffff;
+}
+
+.userDetailsContainer{
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--spacing);
+
+
+}
+.followersContainer .value{
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.followersContainer span:not(.value){
+    color: grey;
+}
+
+.followersContainer a{
+    margin-right: 15px;
+}
+
+.followersContainer a:hover{
+    color: var(--greenLight);
+}
+
+.tabsContainer{
+    display: flex;
+    border-bottom: 1px solid var(--lightGrey);
+    flex-shrink: 0;
+}
+
+.tab{
+    flex: 1;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    color:grey;
+    font-weight: bold;
+}
+
+.tab.active{
+    color:var(--green);
+    border-bottom:2px solid var(--green)
+
+}
+.tab:hover{
+    color: var(--green);
+    background-color:var(--greenBackground);
+}
+
+.wrapper > .row{
+    margin: 0;
+}
+.actions_activity{
+    display: flex;
+    flex-direction: column;
 }

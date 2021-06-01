@@ -16,7 +16,7 @@ app.set("view engine","pug");
 app.set("views","views");
 
 app.use(bodyParser.urlencoded({ extended : false }));
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname,"/public")));
 
 app.use(session({
     secret:"My Session",
@@ -27,21 +27,30 @@ app.use(session({
 
 const loginRoute = require('./routes/loginRoutes');
 const registerRoute = require('./routes/registerRoutes');
+const postRoute = require('./routes/postRoutes');
+
+const profileRoute = require('./routes/profileRoute');
 const logOutRoute = require('./routes/logOutRoute');
 
 //api routes
 const postApiRoute = require('./routes/api/post');
+const usersApiRoute = require('./routes/api/users');
 
 app.use("/login",loginRoute);
 app.use("/register",registerRoute);
 app.use("/logout",logOutRoute);
+app.use("/posts",middleware.requireLogin,postRoute);
+app.use("/profile",middleware.requireLogin,profileRoute);
+
 app.use("/api/posts",postApiRoute);
+app.use("/api/users",usersApiRoute);
 
 app.get("/",middleware.requireLogin,(req,res,next)=>{
 
     var payload = {
-        pageTitle:"Mtaa",
-        userLoggedIn:req.session.user
+        pageTitle:"ApprenticeOre",
+        userLoggedIn:req.session.user,
+        userLoggedInJS:JSON.stringify(req.session.user)
     }
 
     res.status(200).render("home",payload);
