@@ -1,0 +1,17 @@
+extends layouts/main-layouts.pug
+
+block content
+    .chatPageContainer
+        .chatTitleBar
+            label(for="userSearchTextBox") To: 
+            #selectedUsers 
+                input#userSearchTextBox(type="text", name="",placeholder="New message") 
+
+        .resultsContainer
+        button#createChatButton(disabled) Create chat
+        
+
+
+
+block scripts
+    script(src='/js/newMessage.js')

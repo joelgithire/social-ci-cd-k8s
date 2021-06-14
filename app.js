@@ -31,24 +31,30 @@ const postRoute = require('./routes/postRoutes');
 
 const profileRoute = require('./routes/profileRoute');
 const logOutRoute = require('./routes/logOutRoute');
+const searchRoute = require('./routes/searchRoutes');
+const messagesRoute = require('./routes/messagesRoutes');
 
 //api routes
 const postApiRoute = require('./routes/api/post');
 const usersApiRoute = require('./routes/api/users');
+const chatsApiRoute = require('./routes/api/chats');
 
 app.use("/login",loginRoute);
 app.use("/register",registerRoute);
 app.use("/logout",logOutRoute);
 app.use("/posts",middleware.requireLogin,postRoute);
 app.use("/profile",middleware.requireLogin,profileRoute);
+app.use("/search",middleware.requireLogin,searchRoute);
+app.use("/messages",middleware.requireLogin,messagesRoute);
 
 app.use("/api/posts",postApiRoute);
 app.use("/api/users",usersApiRoute);
+app.use("/api/chats",chatsApiRoute);
 
 app.get("/",middleware.requireLogin,(req,res,next)=>{
 
     var payload = {
-        pageTitle:"ApprenticeOre",
+        pageTitle:"Are we toget(h/e|r)",
         userLoggedIn:req.session.user,
         userLoggedInJS:JSON.stringify(req.session.user)
     }

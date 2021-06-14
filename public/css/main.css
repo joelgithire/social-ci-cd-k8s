@@ -81,6 +81,11 @@ nav a:hover{
     flex-shrink: 0;
 }
 
+.titleContainer i{
+    display: flex;
+    position: absolute;
+    right: 100px;
+}
 .postFormContainer{
     display: flex;
     padding: var(--spacing);
@@ -137,6 +142,8 @@ nav a:hover{
     display: flex;
     flex-direction: column;
     flex: 1;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .username,.date{
     color: grey;
@@ -210,6 +217,13 @@ nav a:hover{
     color:#35960e;
 }
 
+.post.largeFont .postedBody::after{
+    font-size: 10px;
+    color:grey;
+    content:"Clicked post."
+
+}
+
 .postContentContainer .header{
     display: flex;
 }
@@ -233,6 +247,10 @@ nav a:hover{
     margin-left: var(--spacing);
     position: absolute;
     bottom: -66px;
+
+    display: flex;
+    align-items:center;
+    justify-content: center;
 
 }
 
@@ -325,4 +343,129 @@ nav a:hover{
 .actions_activity{
     display: flex;
     flex-direction: column;
+}
+
+.resultsContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.resultsContainer .user {
+    padding: var(--spacing);
+    display: flex;
+    border-bottom: 1px solid var(--lightGrey);
+    
+}
+.user .userDetailsContainer{
+    flex: 1;
+    padding:  0 var(--spacing);
+    
+}
+
+.profilePictureButton{
+    position: absolute;
+    font-size: 50px;
+    color:rgb(0, 0, 0,0.6);
+    display:none;
+}
+
+.userImageContainer:hover .profilePictureButton{
+    display: block;
+}
+
+#imagePreview {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+}
+.pinnedButton.active{
+    color: var(--green);
+
+
+}
+
+.pinnedPostText{
+    font-size: 10px;
+    color:#00a700 ;
+}
+
+.searchBarContainer{
+    position: relative;
+    color :lightgray;
+    padding: 10px var(--spacing);
+}
+
+.searchBarContainer i{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.searchBarContainer #searchBox{
+    height: 36px;
+    width: 100%;
+    padding: 5px 15px 5px 40px;
+    border-radius: 50px;
+    background: var(--lightGrey);
+    border:none;
+    color:black;
+
+
+}
+
+.chatPageContainer{
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    
+}
+
+.chatTitleBar{
+    border-bottom:1px solid lightgray;
+    display: flex;
+    align-items:center;
+    min-height: 60px;
+    padding: 10px;
+
+}
+
+.chatTitleBar label{
+    margin:0 10px 0 0;
+}
+
+#userSearchTextBox{
+    border:none;
+    flex: 1;
+    font-weight: 200px;
+    min-width: 350px;
+}
+
+#createChatButton {
+    border:none;
+    background-color: var(--green);
+    color: #ffff;
+    padding: 7px 20px;
+    margin: 10px auto;
+    border-radius: 50px;
+}
+
+#createChatButton:disabled{
+    background-color: lightgray;
+    color: grey;
+}
+
+.selectedUser{
+    font-weight: 300;
+    background-color:lightgray;
+    color:#00a700;
+    padding: 5px;
+    border-radius:30px;
+    margin: 5px 5px 0 0;
+    display: inline-block;
+
+}
+
+.postedBody{
+    padding-top: 20px;
+    padding-bottom: 20px;
 }

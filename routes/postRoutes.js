@@ -9,13 +9,13 @@ const User = require('../schemas/UserSchema');
 router.get("/:id", (req,res,next) => {
 
     var payload = {
-        pageTitle:req.session.user.username,
+        pageTitle:"View Posts",
         userLoggedIn:req.session.user,
         userLoggedInJS:JSON.stringify(req.session.user),
-        profileUser:req.session.user
+        postId:req.params.id
     }
 
-   res.status(200).render("profilePage", payload);
+   res.status(200).render("postsPage", payload);
 })
 
 

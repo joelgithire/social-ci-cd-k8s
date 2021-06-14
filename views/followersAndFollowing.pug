@@ -1,0 +1,21 @@
+extends layouts/main-layouts.pug
+
+block content 
+    if !profileUser
+        span.errorMessage the user you are trying tp reach is not available
+    else
+        script.
+            var profileUserId = '!{profileUser._id}';
+            var selectedTab = '!{selectedTab}';
+        
+        .tabsContainer 
+            +createTab("Following",`/profile/${profileUser.username}/following`,selectedTab !="followers")
+            +createTab("Followers",`/profile/${profileUser.username}/followers`,selectedTab=="followers")
+
+        
+        .resultsContainer
+
+
+block scripts
+    script(src='/js/followersAndFollowing.js')
+    

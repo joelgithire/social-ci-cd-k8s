@@ -1,3 +1,8 @@
+//globals
+var timer;
+
+var selectedUsers = [];
+
 $("#postTextArea, #replyTextArea").keyup(event => {
     var textbox = $(event.target);
     var value = textbox.val().trim();
@@ -141,6 +146,20 @@ $("#deletePostModal").on("show.bs.modal",(event)=>{
 
 })
 
+$("#confirmPinModal").on("show.bs.modal",(event)=>{
+    var button = $(event.relatedTarget);
+    var postId= getPostIDFromElement(button);
+    $("#pinPostButton").data("id",postId);    
+
+})
+
+$("#unpinModal").on("show.bs.modal",(event)=>{
+    var button = $(event.relatedTarget);
+    var postId= getPostIDFromElement(button);
+    $("#unpinPostButton").data("id",postId);    
+
+})
+
 $(document).on("click",".followButton",(event)=>{
     var button = $(event.target);
     var userId = button.data().user;
@@ -189,6 +208,129 @@ $("#deletePost").click(()=>{
         }
     })
      
+})
+
+$("#pinPostButton").click(()=>{
+    var postID =$(event.target).data("id");
+
+    $.ajax({
+       url:`/api/posts/${postID}`,
+       type:"PUT",
+       data:{pinned:true},
+       success:(data,status,xhr)=>{
+            if(xhr.status != 204){
+                alert("could not find post");
+                return;
+            }
+
+           location.reload();
+       }
+   })
+    
+})
+
+
+$("#unpinPostButton").click(()=>{
+    var postID =$(event.target).data("id");
+
+    $.ajax({
+       url:`/api/posts/${postID}`,
+       type:"PUT",
+       data:{pinned:false},
+       success:(data,status,xhr)=>{
+            if(xhr.status != 204){
+                alert("could not find post");
+                return;
+            }
+
+           location.reload();
+       }
+   })
+    
+})
+
+$("#filePhoto").change(function(){
+     if(this.files && this.files[0]){
+        var reader = new FileReader();
+        reader.onload = (e)=> {
+            image = document.getElementById("imagePreview");
+            image.src = e.target.result;
+
+            // if(cropper !== undefined){
+            //     cropper.destroy();
+                
+            // }
+            // cropper = new Cropper(image, {
+            //     aspectRatio: 1 / 1,
+            //     background: false
+            // });
+
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+    else{
+        console.log("not able")
+    }
+})
+
+$("#imageUplaodButton").click(()=>{
+    if(image==null){
+        alert("make sure file is an image");
+        return;
+    }
+    
+    image.toBlob((blob) => {
+        var formData = new FormData();
+        formData.append("cropppedImage",blob);
+        console.log(formData);
+    })
+})
+
+$("#userSearchTextBox").keydown((event)=>{
+    clearTimeout(timer);
+    var textBox = $(event.target);
+    var value = textBox.val();
+    
+    if(value == "" && (event.which == 8 || event.keyCode == 8)){
+        selectedUsers.pop();
+        updateSelectedUsersHTML()
+        $(".resultsContainer").html("")
+        
+        if(selectedUsers.length == 0){
+            $("#createChatButton").prop("disabled",true);
+        }
+
+
+        return;
+    }
+
+    timer = setTimeout(()=>{
+        value =textBox.val().trim();
+
+        if(value == ""){
+            $(".resultsContainer").html("")
+        }else{
+            searchUsers(value)
+    
+        }
+    }, 1000)
+
+    
+}) 
+
+$("#createChatButton").click(()=>{
+    var data = JSON.stringify(selectedUsers);
+
+    $.post("/api/chats",{users:data}, chat=>{
+
+        if(!chat || !chat._id){
+            return alert("invalid response");
+        } 
+
+        window.location.href = `/messages/${chat._id}`;
+
+    })
+    
 })
 
 function getPostIDFromElement(element){
@@ -250,8 +392,21 @@ function createPostHTML(postData, largeFont=false){
     }
 
     var buttons = "";
+    var pinnedClass = "";
+    var pinnedPostText = ""
     if(postData.postedBy._id==userLogedIn._id){
-        buttons = `<button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class='fas fa-times'></i></button>`
+
+        var dataTarget = "#confirmPinModal"
+
+        if(postData.pinned === true){
+            pinnedClass = "active"
+            dataTarget = "#unpinModal"
+            
+            pinnedPostText = "<i class='fas fa-thumbtack'></i><span>Pinned post</span>"
+        }
+
+        buttons = `<button class='pinnedButton ${pinnedClass}' data-id="${postData._id}" data-toggle="modal" data-target="${dataTarget}"><i class='fas fa-thumbtack'></i></button>
+                    <button data-id="${postData._id}" data-toggle="modal" data-target="#deletePostModal"><i class='fas fa-times'></i></button>`
     }
 
     return `<div class='post ${mainPostLargeFont}' data-id='${postData._id}'>
@@ -264,6 +419,7 @@ function createPostHTML(postData, largeFont=false){
                     <img src='${postedBy.profilePic}'>
                 </div>
                 <div class='postContentContainer'>
+                    <div class ='pinnedPostText'>${pinnedPostText}</div>
                     <div class='header'>
                         <a class='displayName' href='/profile/${postedBy.username}'>${displayName}</a>
                         <span class='username'>@${postedBy.username}</span>
@@ -275,7 +431,7 @@ function createPostHTML(postData, largeFont=false){
                     </div>
                     
                     <div class='postedBody'>
-                        <span>${postData.content}</span>
+                        <span class="postContent">${postData.content}</span>
                     </div>
                     <div class='postedFooter'>
                         <div class="postButtonContainer">
@@ -291,7 +447,7 @@ function createPostHTML(postData, largeFont=false){
                         </div>
                         <div class="postButtonContainer orange">
                             <button class='likeButton ${likeButtonActiveClass}'>
-                                <i class="fab fa-hotjar"> like</i><span>${postData.likes.length || ""}</span>
+                                <i class="fas fa-assistive-listening-systems"> heard</i><span>${postData.likes.length || ""}</span>
                             </button>
                         </div>
                         
@@ -373,4 +529,95 @@ function outputPostsWithReplies(results,container){
     })
 
     
+}
+
+function outputUsers(results,container){
+    container.html("")
+
+    results.forEach(results => {
+        var html = createUserHTML(results,true)
+        container.append(html);
+    });
+
+    if (results.length == 0){
+        container.append('<span class="noResults">No results found</span>')
+    }
+
+}
+
+function createUserHTML(userData,showFollowButton){
+
+    var name = userData.firstName + " " + userData.lastName;
+    var isFollowing = userLogedIn.following && userLogedIn.following.includes(userData._id);
+    var text = isFollowing ? "Following" : "Follow";
+    var buttonClass = isFollowing ? "followButton following" : "followButton";
+    var followButton = "";
+
+    if (showFollowButton && userLogedIn._id != userData._id){
+        followButton = `<div class='followButtonContainer'>
+                            <button class='${buttonClass}' data-user='${userData._id}'>${text}</button>
+                        </div>`
+    }
+
+    return `<div class="user">  
+                <div class="userImageContainer">
+                    <img src='${userData.profilePic}'>
+                </div>
+                <div class="userDetailsContainer">
+                    <div class="header">
+                        <a href="profile/${userData.username}">${name}</a>
+                        <span class="username">@${userData.username}</span>
+                    </div>
+                </div>
+                ${followButton}
+            </div>`
+}
+
+function searchUsers(searchTerm){
+    $.get("/api/users",{search:searchTerm},results=>{
+        outputSelectableUsers(results,$(".resultsContainer"))
+    })
+}
+
+function outputSelectableUsers(results,container){
+    container.html("");
+
+    results.forEach(result => {
+        
+        if(result._id == userLogedIn._id || selectedUsers.some(u =>  u._id == result._id)){
+            return;
+        }
+
+        var html = createUserHTML(result,false)
+        var element = $(html)
+        element.click(()=>userSelected(result))
+        container.append(element);
+    });
+
+    if (results.length == 0){
+        container.append('<span class="noResults">No results found</span>')
+    }
+
+}
+
+function userSelected(user){
+    
+    selectedUsers.push(user);
+    updateSelectedUsersHTML(user)
+    $("#userSearchTextBox").val("").focus();
+    $(".resultsContainer").html("");
+    $("#createChatButton").prop("disabled",false);
+}
+
+function updateSelectedUsersHTML(){
+    elements = [];
+
+    selectedUsers.forEach((user)=>{
+        var name = user.firstName + " " +user.lastName;
+        var userElement = $(`<span class='selectedUser'>${name}</span>`)
+        elements.push(userElement);
+    })
+
+    $(".selectedUser").remove();
+    $("#selectedUsers").prepend(elements);
 }
