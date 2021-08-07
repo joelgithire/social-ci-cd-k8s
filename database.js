@@ -11,7 +11,7 @@ class Database{
     }
 
     connect(){
-        mongoose.connect('mongodb://127.0.0.1:27017/twitter');
+        mongoose.connect('mongodb://mongo:27017/twitter');
         var db = mongoose.connection;
 
         db.on('error', console.error.bind(console, 'Connection Error:'));

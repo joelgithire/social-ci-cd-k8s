@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3004;
+const port = 3000;
 const middleware = require('./middleware');
 const server = app.listen(port,()=>console.log("running on port :" + 3004))
 const path = require('path')

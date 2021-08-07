@@ -1,7 +1,6 @@
 {
   "name": "tweetclone",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,5 +17,14 @@
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.18",
     "pug": "^3.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joelmukono/social.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Joelmukono/social/issues"
+  },
+  "homepage": "https://github.com/Joelmukono/social#readme",
+  "description": ""
 }
