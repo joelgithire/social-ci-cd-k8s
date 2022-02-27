@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: are-we-together-ingress
+spec:
+  rules:
+  - host: notticeboard.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: social-service
+          servicePort: 3000
