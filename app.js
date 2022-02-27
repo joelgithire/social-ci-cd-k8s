@@ -54,7 +54,7 @@ app.use("/api/chats",chatsApiRoute);
 app.get("/",middleware.requireLogin,(req,res,next)=>{
 
     var payload = {
-        pageTitle:"Are we toget(h/e|r)!",
+        pageTitle:"Are we toget(h/e|r)",
         userLoggedIn:req.session.user,
         userLoggedInJS:JSON.stringify(req.session.user)
     }
