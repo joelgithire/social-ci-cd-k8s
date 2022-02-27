@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: social
-        image: joelmukono/are-we-together
+        image: joelmukono/are-we-together:$COMMIT_SHA1
 ---
 apiVersion: v1
 kind: Service
