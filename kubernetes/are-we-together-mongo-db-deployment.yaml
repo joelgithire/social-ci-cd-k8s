@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socical-mongo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: social-mongo 
+  template:
+    metadata:
+      labels:
+        app: social-mongo
+    spec:
+      volumes:
+        - name: mongo-db-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+      containers:
+      - name: social-mongo
+        image: mongo
+        volumeMounts:
+          - mountPath: '/data/db'
+            name: mongo-db-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: social-mongo-service
+spec:
+  selector:
+    app: social-mongo
+  ports:
+  - name: mongo-database
+    protocol: TCP
+    port: 27017
+    targetPort: 27017
